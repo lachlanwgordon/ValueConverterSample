@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:ValueConverterSample"
+    mc:Ignorable="d"
+    x:Class="ValueConverterSample.MainPage"
+    xmlns:converters="clr-namespace:ValueConverterSample.Converters">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style
+                TargetType="StackLayout">
+                <Setter
+                    Property="HorizontalOptions"
+                    Value="Center" />
+            </Style>
+            <converters:DoubleToBoolConverter
+                x:Key="doubleToBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <local:MainPageViewModel
+            x:Name="VM" />
+    </ContentPage.BindingContext>
+    <StackLayout
+        Spacing="20"
+        VerticalOptions="Center"
+        x:DataType="local:MainPageViewModel">
+        <Label
+            Text="Handy Weather App" />
+        <Button
+            Text="Check Weather"
+            Command="{Binding CheckWeatherCommand}" />
+        <Label
+            Text="{Binding Temperature, StringFormat='Temperature: {0:F2}C'}" />
+        <Label
+            Text="You should wear shorts"
+            IsVisible="{Binding Temperature, Converter={StaticResource doubleToBoolConverter}, ConverterParameter=20}" />
+
+        <Label
+            Text="{Binding ChanceOfRain, StringFormat='Chance Of Rain: {0:F2}%'}" />
+
+        <Label
+            Text="You should bring an umbrella"
+            IsVisible="{Binding ChanceOfRain, Converter={StaticResource doubleToBoolConverter}, ConverterParameter=80}" />
+        <Label
+            Text="Is it windy?" />
+        <StackLayout
+            Orientation="Horizontal">
+            <Label
+                Text="Not really" />
+            <Switch
+                HorizontalOptions="Center"
+                IsToggled="{Binding WindSpeed, Converter={StaticResource doubleToBoolConverter}, ConverterParameter=20}" />
+            <Label
+                Text="Yep" />
+        </StackLayout>
+        <Label
+            Text="{Binding WindSpeed, StringFormat='It is windy, {0}km/h! you should bring a kite'}"
+            IsVisible="{Binding WindSpeed, Converter={StaticResource doubleToBoolConverter}, ConverterParameter=20}" />
+    </StackLayout>
+</ContentPage>
