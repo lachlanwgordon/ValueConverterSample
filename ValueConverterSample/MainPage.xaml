@@ -10,6 +10,7 @@
     xmlns:converters="clr-namespace:ValueConverterSample.Converters">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converters:InverseBooleanConverter x:Key="inverseBooleanConverter"/>
             <Style
                 TargetType="StackLayout">
                 <Setter
@@ -33,8 +34,9 @@
         <Button
             Text="Check Weather"
             Command="{Binding CheckWeatherCommand}" />
+        <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="True"/>
         <Label
-            Text="{Binding Temperature, StringFormat='Temperature: {0:F2}C'}" />
+            Text="{Binding Temperature, StringFormat='Temperature: {0:F2}C'}" IsVisible="{Binding IsBusy, Converter={StaticResource inverseBooleanConverter}}"/>
         <Label
             Text="You should wear shorts"
             IsVisible="{Binding Temperature, Converter={StaticResource doubleToBoolConverter}, ConverterParameter=20}" />
